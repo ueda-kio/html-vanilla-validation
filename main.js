@@ -13,7 +13,7 @@
 			this.#formElms = [...this.#form.elements].filter(
 				(elm) => elm instanceof HTMLInputElement || elm instanceof HTMLSelectElement || elm instanceof HTMLTextAreaElement
 			);
-			this.#customRuleFormElms = this.#formElms.filter((elm) => elm.matches('[data-custom-rule="test"]'));
+			this.#customRuleFormElms = this.#formElms.filter((elm) => elm.hasAttribute('data-custom-rule'));
 		}
 
 		/**
@@ -65,7 +65,7 @@
 		 */
 		#checkCustomValidation(input) {
 			if (input.getAttribute('data-custom-rule') === 'test') {
-				if (input.value !== '0') {
+				if (input.value !== '' && input.value !== '0') {
 					input.setCustomValidity(input.title);
 				} else {
 					input.setCustomValidity('');
@@ -75,7 +75,7 @@
 
 		/**
 		 * 引数に渡された要素にバリデーションを実行する
-		 * @param {HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement} input
+		 * @param {HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement} input 入力項目
 		 */
 		#validateTargetInput(input) {
 			this.#resetErrorState(input);
@@ -84,11 +84,6 @@
 				this.#checkCustomValidation(input);
 			}
 			input.checkValidity();
-		}
-
-		#checkValidity() {
-			this.#customRuleFormElms.forEach((formElm) => this.#validateTargetInput(formElm));
-			return this.#form.checkValidity();
 		}
 
 		/**
@@ -103,16 +98,12 @@
 			if (input.validity.valueMissing) {
 				input.setCustomValidity('必須入力項目です。');
 				this.#displayErrorState(input, input.validationMessage);
-			} else if (input.validity.typeMismatch) {
-				this.#displayErrorState(input, input.validationMessage);
 			} else if (input.validity.patternMismatch) {
 				input.setCustomValidity(input.title);
 				this.#displayErrorState(input, input.validationMessage);
 			} else {
 				this.#displayErrorState(input, input.validationMessage);
 			}
-
-			// input.setCustomValidity('');
 		}
 
 		/**
@@ -121,14 +112,15 @@
 		 */
 		#handleSubmit(e) {
 			e.preventDefault();
-			this.#formElms.forEach((formElm) => this.#resetErrorState(formElm));
-
-			const isValid = this.#checkValidity();
+			this.#formElms.forEach((formElm) => this.#validateTargetInput(formElm));
+			const isValid = this.#form.checkValidity();
 			if (!isValid) {
 				const firstInvalidInput = this.#formElms.find((formElm) => !formElm.validity.valid);
 				firstInvalidInput.focus();
 				return;
 			}
+
+			// 以降validの場合
 			alert('valid!');
 		}
 
@@ -144,17 +136,11 @@
 				formElm.addEventListener('invalid', (e) => this.#handleInvalid(e));
 			});
 
-			// if (this.#customRuleFormElms) {
-			// 	this.#customRuleFormElms.addEventListener('');
-			// }
-
 			this.#form.addEventListener('submit', (e) => this.#handleSubmit(e), { passive: false });
 		}
 
 		init() {
-			if (!this.#formElms.length) {
-				return console.warn(new Error());
-			}
+			if (!this.#formElms.length) return false;
 			this.#registerEventListener();
 		}
 	}
@@ -166,50 +152,3 @@
 		validateInstance.init();
 	});
 })();
-
-// const form = document.getElementById('form');
-// const inputElms = form.querySelectorAll('input');
-
-// form.addEventListener(
-// 	'submit',
-// 	(e) => {
-// 		e.preventDefault();
-// 		inputElms.forEach((input) => {
-// 			const label = input.closest('label');
-// 			label.classList.remove('is-error');
-// 			const errorMessage = label.nextElementSibling;
-// 			errorMessage.textContent = '';
-// 		});
-// 		const result = form.checkValidity();
-// 		if (result) {
-// 			alert('submit!');
-// 		}
-// 	},
-// 	{ passive: false }
-// );
-// inputElms.forEach((input) => {
-// 	input.addEventListener('invalid', (e) => {
-// 		const currentTarget = e.currentTarget;
-// 		const label = currentTarget.closest('label');
-// 		label.classList.add('is-error');
-// 		const errorMessage = label.nextElementSibling;
-// 		if (currentTarget.validity.patternMismatch) {
-// 			currentTarget.setCustomValidity('「banana」もしくは「cherry」を入力してください。');
-// 		}
-// 		errorMessage.textContent = currentTarget.validationMessage;
-// 		currentTarget.setCustomValidity('');
-// 	});
-// });
-
-// input.addEventListener('invalid', () => {
-// 	input.classList.add('is-error');
-// 	if (input.validity.patternMismatch) {
-// 		input.setCustomValidity('「banana」もしくは「cherry」を入力してください。');
-// 	}
-// 	errorMessage.textContent = input.validationMessage;
-// 	input.setCustomValidity('');
-// });
-
-// if (input.checkValidity()) {
-// 	errorMessage.textContent = input.validationMessage;
-// }
