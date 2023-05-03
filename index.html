@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="main.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form id="form" novalidate>
+        <p class="wrapper" data-wrapper>
+            <label>
+                <span>必須項目: </span>
+                <input type="text" required>
+            </label>
+            <span class="errorMessage"></span>
+        </p>
+        <p class="wrapper" data-wrapper>
+            <label>
+                <span>必須項目number: </span>
+                <input type="number" required>
+            </label>
+            <span class="errorMessage"></span>
+        </p>
+        <p class="wrapper" data-wrapper>
+            <label>
+                <span>最小5, 最大10文字: </span>
+                <input type="text" required minlength="5" maxlength="10">
+            </label>
+            <span class="errorMessage"></span>
+        </p>
+        <p class="wrapper" data-wrapper>
+            <label>
+                <span>[banana]or[cherry](title属性にてエラー文指定): </span>
+                <input type="text" title="「banana」もしくは「cherry」を入力してください。" required pattern="[Bb]anana|[Cc]herry">
+            </label>
+            <span class="errorMessage"></span>
+        </p>
+        <p class="wrapper" data-wrapper>
+            <label>
+                <span>email: </span>
+                <input type="email" name="email" required maxlength="10">
+            </label>
+            <span class="errorMessage"></span>
+        </p>
+        <p class="wrapper" data-wrapper>
+            <label>
+                <span>URL: </span>
+                <input type="url" required>
+            </label>
+            <span class="errorMessage"></span>
+        </p>
+        <p class="wrapper" data-wrapper>
+            <label>
+                <span>カスタムルール: </span>
+                <input type="text" data-custom-rule="test" title="0を入力してください。">
+            </label>
+            <span class="errorMessage"></span>
+        </p>
+        <p class="wrapper" data-wrapper>
+            <label>
+                <span>ラジオ1</span>
+                <input type="radio" name="radio" value="1" required>
+            </label>
+            <label>
+                <span>ラジオ2</span>
+                <input type="radio" name="radio" value="2" required>
+            </label>
+            <label>
+                <span>ラジオ3</span>
+                <input type="radio" name="radio" value="3" title="必須項目です。" required>
+            </label>
+            <span class="errorMessage"></span>
+        </p>
+        <p class="wrapper" data-wrapper>
+            <label>
+                <span>チェックボックス: </span>
+                <input type="checkbox" name="check" value="1" title="必須項目です。" required>
+            </label>
+            <span class="errorMessage"></span>
+        </p>
+        <p class="wrapper" data-wrapper>
+            <label>
+                <span>select: </span>
+                <select name="select" required>
+                    <option selected disabled></option>
+                    <option value="01">選択肢01</option>
+                    <option value="02">選択肢02</option>
+                    <option value="03">選択肢03</option>
+                    <option value="04">選択肢04</option>
+                </select>
+            </label>
+            <span class="errorMessage"></span>
+        </p>
+        <p>
+            <button>送信</button>
+        </p>
+    </form>
+</body>
+</html>

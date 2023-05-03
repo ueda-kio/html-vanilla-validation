@@ -1,0 +1,19 @@
+.errorMessage {
+	display: none;
+	color: red;
+	font-size: 12px;
+	text-align: end;
+}
+
+.wrapper.is-error .errorMessage {
+	display: block;
+}
+
+.wrapper.is-error :is(label, span) {
+	color: red;
+}
+
+.wrapper.is-error :is(input, select) {
+	border-color: red;
+	background-color: rgba(200, 0, 0, 0.1);
+}
