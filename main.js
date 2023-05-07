@@ -144,6 +144,19 @@
 		}
 	}
 
+	// カスタムルールを追加する場合
+	// class CustomRuleValidate extends Validate {
+	// 	constructor(form) {
+	// 		super(form);
+	// 	}
+
+	// 	/**
+	// 	 * カスタムルール
+	// 	 * @param {HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement} input 入力項目
+	// 	 */
+	// 	checkCustomValidation(input) {}
+	// }
+
 	window.addEventListener('DOMContentLoaded', () => {
 		/** @type {HTMLFormElement} */
 		const form = document.getElementById('form');
