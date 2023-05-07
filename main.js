@@ -44,7 +44,6 @@
 		#displayErrorState(input, message) {
 			const { wrapper, errorMessage } = this.#getElms(input);
 			wrapper.classList.add('is-error');
-			// label.insertAdjacentHTML('beforeend', `<span class="errorMessage">${message || input.validationMessage}</span>`);
 			errorMessage.textContent = message || input.validationMessage;
 		}
 
@@ -63,9 +62,9 @@
 		 * カスタムルール
 		 * @param {HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement} input 入力項目
 		 */
-		#checkCustomValidation(input) {
+		checkCustomValidation(input) {
 			if (input.getAttribute('data-custom-rule') === 'test') {
-				if (input.value !== '' && input.value !== '0') {
+				if (input.value !== '' && input.value !== '1') {
 					input.setCustomValidity(input.title);
 				} else {
 					input.setCustomValidity('');
@@ -81,7 +80,7 @@
 			this.#resetErrorState(input);
 			// カスタムルールの対象の場合
 			if (this.#customRuleFormElms.includes(input)) {
-				this.#checkCustomValidation(input);
+				this.checkCustomValidation(input);
 			}
 			input.checkValidity();
 		}
@@ -96,7 +95,7 @@
 			const input = e.currentTarget;
 
 			if (input.validity.valueMissing) {
-				input.setCustomValidity('必須入力項目です。');
+				// input.setCustomValidity('必須入力項目です。');
 				this.#displayErrorState(input, input.validationMessage);
 			} else if (input.validity.patternMismatch) {
 				input.setCustomValidity(input.title);
@@ -140,7 +139,7 @@
 		}
 
 		init() {
-			if (!this.#formElms.length) return false;
+			if (!this.#formElms.length) return;
 			this.#registerEventListener();
 		}
 	}
